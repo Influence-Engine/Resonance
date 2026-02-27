@@ -27,7 +27,7 @@ namespace Resonance
                     break;
 
                     case AudioEncoding.Pcm24:
-                    pcm = buffer.ToPcm16();
+                    pcm = buffer.ToPcm24();
                     bitsPerSample =  24;
                     formatCode = 1;
                     bytesPerSample = 3;

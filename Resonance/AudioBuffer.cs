@@ -23,19 +23,6 @@ namespace Resonance
             this.samples = new float[sampleCount];
         }
 
-        public short[] ToPcm16Old()
-        {
-            short[] pcm = new short[samples.Length];
-            for (int i = 0; i < samples.Length; i++)
-            {
-                // Clamp to avoid clipping
-                float sample = Math.Clamp(samples[i], -1f, 1f);
-                pcm[i] = (short)MathF.Round(sample * short.MaxValue);
-            }
-
-            return pcm;
-        }
-
         public byte[] ToPcm16()
         {
             byte[] pcm = new byte[samples.Length * 2];
@@ -48,6 +35,24 @@ namespace Resonance
 
                 pcm[offset++] = (byte)(value & 0xFF);
                 pcm[offset++] = (byte)((value >> 8) & 0xFF);
+            }
+
+            return pcm;
+        }
+
+        public byte[] ToPcm24()
+        {
+            byte[] pcm = new byte[samples.Length * 3];
+            int offset = 0;
+
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float clamped = Math.Clamp(samples[i], -1f, 1f);
+                int value = (int)MathF.Round(clamped * 8388607f); // signed 24-bit.MaxValue >= 8388607
+
+                pcm[offset++] = (byte)(value & 0xFF);
+                pcm[offset++] = (byte)((value >> 8) & 0xFF);
+                pcm[offset++] = (byte)((value >> 16) & 0xFF);
             }
 
             return pcm;
