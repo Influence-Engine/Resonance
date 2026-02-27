@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security;
-using System.Text;
-
+﻿
 namespace Resonance.Envelopes
 {
     /// <summary>Attack-Decay-Sustain-Release envelope generator</summary>
