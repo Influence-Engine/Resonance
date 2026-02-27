@@ -15,7 +15,8 @@ namespace Resonance.Envelopes
 
         EnvelopeStage stage = EnvelopeStage.Off;
         float currentLevel;
-        int samplesRemaining;
+        int samplesInCurrentStage;
+        int totalSamplesForCurrentStage;
         AudioFormat format;
 
         public float AttackTime = 0.01f;
@@ -36,15 +37,17 @@ namespace Resonance.Envelopes
         {
             stage = EnvelopeStage.Attack;
             currentLevel = 0;
-            samplesRemaining = format.SecondsToSamples(0.01f); // AttackTime
+            samplesInCurrentStage = 0;
+            totalSamplesForCurrentStage = format.SecondsToSamples(AttackTime); // AttackTime
         }
 
         public void NoteOff()
         {
-            if(stage != EnvelopeStage.Off)
+            if(stage != EnvelopeStage.Off && stage != EnvelopeStage.Release)
             {
                 stage = EnvelopeStage.Release;
-                samplesRemaining = format.SecondsToSamples(0.2f); // ReleaseTime
+                samplesInCurrentStage = 0;
+                totalSamplesForCurrentStage = format.SecondsToSamples(ReleaseTime); // ReleaseTime
             }
         }
 
@@ -53,22 +56,23 @@ namespace Resonance.Envelopes
             if (stage == EnvelopeStage.Off)
                 return 0;
 
-            if (samplesRemaining <= 0)
-                AdvanceStage();
-
-            samplesRemaining--;
-
-            float progess = 1f - (samplesRemaining / (float)format.SecondsToSamples(GetCurrentStageTime()));
+            float progress = totalSamplesForCurrentStage > 0
+                ? samplesInCurrentStage / (float)totalSamplesForCurrentStage
+                : 1f;
 
             currentLevel = stage switch
             {
-                EnvelopeStage.Attack => ApplyCurve(progess, AttackCurve),
-                EnvelopeStage.Decay => 1f - ApplyCurve(progess, DecayCurve) * (1f - SustainLevel),
+                EnvelopeStage.Attack => ApplyCurve(progress, AttackCurve),
+                EnvelopeStage.Decay => 1f - ApplyCurve(progress, DecayCurve) * (1f - SustainLevel),
                 EnvelopeStage.Sustain => SustainLevel,
-                EnvelopeStage.Release => SustainLevel * (1f - ApplyCurve(progess, ReleaseCurve)),
+                EnvelopeStage.Release => SustainLevel * (1f - ApplyCurve(progress, ReleaseCurve)),
 
                 _ => 0,
             };
+
+            samplesInCurrentStage++;
+            if (samplesInCurrentStage >= totalSamplesForCurrentStage)
+                AdvanceStage();
 
             return currentLevel;
         }
@@ -79,16 +83,16 @@ namespace Resonance.Envelopes
             {
                 case EnvelopeStage.Attack:
                     stage = EnvelopeStage.Decay;
-                    samplesRemaining = format.SecondsToSamples(DecayTime);
-                    currentLevel = 1f;
+                    samplesInCurrentStage = 0;
+                    totalSamplesForCurrentStage = format.SecondsToSamples(DecayTime);
                     break;
                 case EnvelopeStage.Decay:
                     stage = EnvelopeStage.Sustain;
-                    samplesRemaining = int.MaxValue;
+                    samplesInCurrentStage = 0;
+                    totalSamplesForCurrentStage = int.MaxValue;
                     break;
                 case EnvelopeStage.Release:
                     stage = EnvelopeStage.Off;
-                    samplesRemaining = 0;
                     currentLevel = 0;
                     break;
             }
@@ -105,13 +109,14 @@ namespace Resonance.Envelopes
             };
         }
 
-        float ApplyCurve(float t, float curve) => MathF.Pow(t, curve) * curve;
+        float ApplyCurve(float t, float curve) => MathF.Pow(t, curve);
 
         public void Reset()
         {
             stage = EnvelopeStage.Off; 
             currentLevel = 0;
-            samplesRemaining = 0;
+            samplesInCurrentStage = 0;
+            totalSamplesForCurrentStage = 0;
         }
     }
 }
