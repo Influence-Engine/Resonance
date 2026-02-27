@@ -1,4 +1,4 @@
-﻿namespace Resonance
+﻿namespace Resonance.Oscillators
 {
     // Petition to call it IResonator >.<
     public interface IOscillator
