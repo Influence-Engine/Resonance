@@ -3,6 +3,7 @@ using Resonance.Envelopes;
 
 namespace Resonance
 {
+    /// <summary>Represents a complete sound effect with all parameters</summary>
     public class SoundEffect
     {
         readonly AudioFormat format;
@@ -20,18 +21,23 @@ namespace Resonance
         public float ReleaseTime = 0.2f;
         public float HoldTime = 0f;
 
+        // Modulation
         public float VibratoFrequency = 5f;
         public float VibratoDepth = 0f;
 
+        // Pulse width (for square waves)
         public float PulseWidth = 0.5f;
         public float PulseWidthSweep = 0f;
 
+        // Effects
         public float Overdrive = 0f;
 
+        // Volume
         public float Volume = 0.5f;
 
         public SoundEffect(AudioFormat format) => this.format = format;
 
+        /// <summary>Generate the sound effect as an audio buffer</summary>
         public AudioBuffer Generate(float duration)
         {
             int sampleCount = format.SecondsToSamples(duration);
