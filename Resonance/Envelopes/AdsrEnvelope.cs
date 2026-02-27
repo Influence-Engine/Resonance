@@ -24,6 +24,7 @@ namespace Resonance.Envelopes
         public float SustainLevel = 0.7f;
         public float ReleaseTime = 0.2f;
 
+        // Curves (1.0 = Linear, > 1.0 = Exponential, < 1.0 = Logarithmic)
         public float AttackCurve = 1f;
         public float DecayCurve = 1f;
         public float ReleaseCurve = 1f;
