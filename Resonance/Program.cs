@@ -46,7 +46,7 @@ class Program
 
     static void SaveSound(AudioBuffer buffer, string fileName)
     {
-        byte[] data = buffer.ToWavBytes();
+        byte[] data =WavWriter.Write(buffer);
         File.WriteAllBytes(fileName, data);
     }
 }

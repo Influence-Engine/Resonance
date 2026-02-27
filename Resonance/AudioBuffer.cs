@@ -23,7 +23,7 @@ namespace Resonance
             this.samples = new float[sampleCount];
         }
 
-        public short[] ToPcm16()
+        public short[] ToPcm16Old()
         {
             short[] pcm = new short[samples.Length];
             for (int i = 0; i < samples.Length; i++)
@@ -36,7 +36,7 @@ namespace Resonance
             return pcm;
         }
 
-        public byte[] ToPcm16Byte()
+        public byte[] ToPcm16()
         {
             byte[] pcm = new byte[samples.Length * 2];
             int offset = 0;
@@ -51,43 +51,6 @@ namespace Resonance
             }
 
             return pcm;
-        }
-
-        public byte[] ToWavBytes()
-        {
-            var pcm = ToPcm16();
-            using var stream = new MemoryStream();
-            using var writer = new BinaryWriter(stream);
-
-            int byteRate = Format.SampleRate * Format.BytesPerSample * Format.Channels;
-            int dataSize = pcm.Length * Format.BytesPerSample;
-
-            // RIFF header
-            writer.Write(Encoding.ASCII.GetBytes("RIFF"));
-            writer.Write(36 + dataSize);
-            writer.Write(Encoding.ASCII.GetBytes("WAVE"));
-
-            // fmt chunk
-            writer.Write(Encoding.ASCII.GetBytes("fmt "));
-            writer.Write(16); // chunk size
-            writer.Write((short)1); // PCM Format
-            writer.Write((short)Format.Channels);
-            writer.Write(Format.SampleRate);
-            writer.Write(byteRate);
-            writer.Write((short)(Format.BytesPerSample * Format.Channels)); // Block align
-            writer.Write((short)16);
-
-            // Data chunk
-            writer.Write(Encoding.ASCII.GetBytes("data"));
-            writer.Write(dataSize);
-
-            foreach(short sample in pcm)
-            {
-                writer.Write(sample);
-            }
-
-            writer.Flush();
-            return stream.ToArray();
         }
 
         public void ApplyGain(float gain)
