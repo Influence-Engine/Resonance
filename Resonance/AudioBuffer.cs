@@ -14,6 +14,9 @@ namespace Resonance
 
         public AudioBuffer(AudioFormat format, int sampleCount)
         {
+            if (sampleCount % format.Channels != 0)
+                throw new ArgumentException("Sample count must be divisible by channel count");
+
             this.format = format;
             this.samples = new float[sampleCount];
         }
