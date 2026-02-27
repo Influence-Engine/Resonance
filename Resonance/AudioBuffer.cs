@@ -58,6 +58,13 @@ namespace Resonance
             return pcm;
         }
 
+        public byte[] ToPcm32F()
+        {
+            byte[] pcm = new byte[samples.Length * 4];
+            Buffer.BlockCopy(samples, 0, pcm, 0, pcm.Length);
+            return pcm;
+        }
+
         public void ApplyGain(float gain)
         {
             for (int i = 0; i < samples.Length; i++)
