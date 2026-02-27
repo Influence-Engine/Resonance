@@ -30,7 +30,7 @@ class Program
             StartFrequency = 200f,
             EndFrequency = 50f,
             AttackTime = 0.001f,
-            DecayTime = 0.5f,
+            DecayTime = 1f,
             SustainLevel = 0,
             Volume = 0.5f
         };
@@ -39,9 +39,6 @@ class Program
         Console.WriteLine("Saved effect2.wav");
 
         Console.ReadKey();
-
-        // new SoundEffect(format) would be cool
-        // then just SaveSound(sound.Generate(length), name)
     }
 
     static void SaveSound(AudioBuffer buffer, string fileName)
