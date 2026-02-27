@@ -1,6 +1,6 @@
 ﻿namespace Resonance
 {
-    public class AudioFormat
+    public readonly struct AudioFormat
     {
         public int SampleRate { get; }
         public int Channels { get; }
