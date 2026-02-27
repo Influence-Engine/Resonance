@@ -1,5 +1,6 @@
 ﻿namespace Resonance
 {
+    /// <summary>Defines the format of audio data</summary>
     public readonly struct AudioFormat
     {
         public int SampleRate { get; }
@@ -18,10 +19,13 @@
             this.Channels = channels;
         }
 
+        /// <summary>Converts seconds to number of samples</summary>
         public int SecondsToSamples(float seconds) => (int)(seconds * SampleRate);
 
+        /// <summary>Converts samples to seconds</summary>
         public float SamplesToSeconds(int samples) => samples / (float)SampleRate;
 
+        /// <summary>Converts frequency in Hz to angular increment per sample</summary>
         public float FrequencyToPhaseIncrement(float frequencyHz) => frequencyHz / SampleRate;
 
         public static readonly AudioFormat CDMono = new AudioFormat(44100, 1);

@@ -1,9 +1,6 @@
-﻿using System.Text;
-
-namespace Resonance
+﻿namespace Resonance
 {
-    // TODO make WavWriter
-    // TODO add ToPcm24 and ToPcm32F (only use byte[])
+    /// <summary>A buffer for audio samples</summary>
     public class AudioBuffer
     {
         readonly float[] samples;
@@ -23,6 +20,7 @@ namespace Resonance
             this.samples = new float[sampleCount];
         }
 
+        /// <summary>Convert floating-point samples to 16-bit PCM</summary>
         public byte[] ToPcm16()
         {
             byte[] pcm = new byte[samples.Length * 2];
@@ -40,6 +38,7 @@ namespace Resonance
             return pcm;
         }
 
+        /// <summary>Convert floating-point samplesto 24-bit PCM</summary>
         public byte[] ToPcm24()
         {
             byte[] pcm = new byte[samples.Length * 3];
@@ -58,6 +57,7 @@ namespace Resonance
             return pcm;
         }
 
+        /// <summary>Convert floating-point samples to 32-bit PCM</summary>
         public byte[] ToPcm32F()
         {
             byte[] pcm = new byte[samples.Length * 4];
