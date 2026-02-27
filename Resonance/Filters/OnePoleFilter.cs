@@ -1,5 +1,6 @@
 ﻿namespace Resonance.Filters
 {
+    /// <summary>Simple one-pole filter (6dB/octave)</summary>
     public class OnePoleFilter : FilterBase
     {
         // Coefficients
@@ -49,6 +50,8 @@
             {
                 b1 = (float)MathF.Exp(-theta);
                 a0 = 1f - b1;
+
+                // NOTE: For HighPass we invert in Process method
             }
         }
     }
