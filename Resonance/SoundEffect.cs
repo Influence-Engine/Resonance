@@ -1,5 +1,7 @@
 ﻿using Resonance.Oscillators;
 using Resonance.Envelopes;
+using Resonance.Filters;
+using System.Collections.ObjectModel;
 
 namespace Resonance
 {
@@ -7,6 +9,9 @@ namespace Resonance
     public class SoundEffect
     {
         readonly AudioFormat format;
+        readonly List<IFilter> filters = new();
+
+        public IReadOnlyList<IFilter> Filters => new ReadOnlyCollection<IFilter>(filters);
 
         // Oscillator settings
         public OscillatorType WaveType = OscillatorType.Square;
@@ -34,6 +39,8 @@ namespace Resonance
 
         // Volume
         public float Volume = 0.5f;
+
+        public int SampleRate => format.SampleRate;
 
         public SoundEffect(AudioFormat format) => this.format = format;
 
@@ -89,13 +96,28 @@ namespace Resonance
                 float envelopeLevel = envelope.Process();
                 sample *= envelopeLevel;
 
-                if (Overdrive > 0)
-                {
-                    sample = MathF.Tanh(sample * Overdrive) / Overdrive;
-                }
-
-                sample *= Volume;
                 buffer.Samples[i] = sample;
+            }
+
+            foreach (IFilter filter in filters)
+            {
+                filter.Reset();
+                filter.ProcessBlock(buffer.Samples[..sampleCount]);
+            }
+
+            if (Overdrive > 0)
+            {
+                for (int i = 0; i < sampleCount; i++)
+                {
+                    float sample = buffer.Samples[i];
+                    sample = MathF.Tanh(sample * Overdrive) / Overdrive;
+                    buffer.Samples[i] = sample;
+                }
+            }
+
+            for (int i = 0; i < sampleCount; i++)
+            {
+                buffer.Samples[i] *= Volume;
             }
 
             return buffer;
@@ -113,5 +135,30 @@ namespace Resonance
                 _ => new SquareOscillator(format)
             };
         }
+
+        #region Filters
+
+        public void AddFilter(IFilter filter)
+        {
+            if (filter.SampleRate != format.SampleRate)
+                throw new ArgumentException($"Filter sample rate ({filter.SampleRate}) must match effect sample rate ({format.SampleRate})");
+
+            filters.Add(filter);
+        }
+
+        public void InsertFilter(int index, IFilter filter)
+        {
+            if (filter.SampleRate != format.SampleRate)
+                throw new ArgumentException($"Filter sample rate ({filter.SampleRate}) must match effect sample rate ({format.SampleRate})");
+
+            filters.Insert(index, filter);
+        }
+
+        public bool RemoveFilter(IFilter filter) => filters.Remove(filter);
+        public void RemoveFilterAt(int index) => filters.RemoveAt(index);
+
+        public void ClearFilters() => filters.Clear();
+
+        #endregion
     }
 }

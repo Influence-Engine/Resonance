@@ -1,4 +1,5 @@
 ﻿using Resonance;
+using Resonance.Filters;
 using Resonance.Oscillators;
 
 class Program
@@ -35,8 +36,13 @@ class Program
             Volume = 0.5f
         };
 
+
         SaveSound(effect2.Generate(1f), "effect2.wav");
         Console.WriteLine("Saved effect2.wav");
+
+        effect2.AddFilter(new OnePoleFilter(effect2.SampleRate, FilterType.LowPass, 200f));
+        SaveSound(effect2.Generate(1f), "effect3.wav");
+        Console.WriteLine("Saved effect3.wav");
 
         Console.ReadKey();
     }
