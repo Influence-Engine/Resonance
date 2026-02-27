@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
-namespace Resonance.Filters
+﻿namespace Resonance.Filters
 {
-    public enum FilterType
-    {
-        LowPass,
-        HighPass,
-        BandPass,
-        // Let me google more later lol
-    }
-
     public interface IFilter
     {
-        FilterType Type { get; }
         int SampleRate { get; }
+        FilterType Type { get; }
 
         float Process(float input);
 
