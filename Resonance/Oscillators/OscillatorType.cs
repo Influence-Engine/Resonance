@@ -1,6 +1,6 @@
-﻿namespace Resonance
+﻿namespace Resonance.Oscillators
 {
-    public enum WaveType
+    public enum OscillatorType
     {
         Square,
         Sawtooth,
