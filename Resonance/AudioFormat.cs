@@ -24,7 +24,6 @@
 
         public float FrequencyToPhaseIncrement(float frequencyHz) => frequencyHz / SampleRate;
 
-
         public static readonly AudioFormat CDMono = new AudioFormat(44100, 1);
         public static readonly AudioFormat CDStereo = new AudioFormat(44100, 2);
         public static readonly AudioFormat StudioMono = new AudioFormat(48000, 1);
