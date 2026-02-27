@@ -6,5 +6,7 @@
         HighPass,
         BandPass,
         // Let me google more later lol
+
+        Chain,
     }
 }
