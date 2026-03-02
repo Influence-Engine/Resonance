@@ -13,8 +13,8 @@ Give it some parameters, get back audio as a `.wav` file or raw `byte[]` data wh
 Resonance is distributed as a `.dll` library. Add a reference to `Resonance.dll` in your project and you are ready to create audio.
 > Targets netstandard2.1 for broad compatibility (.NET, Mono, Unity, Godot, etc.)
 
-### Usage
-Generate a WAV file
+## Usage
+### Generate a WAV file
 ```cs
 using Resonance;
 using Resonance.Oscillators;
@@ -35,16 +35,21 @@ byte[] wav = WavWriter.Write(buffer, AudioEncoding.Pcm16);
 File.WriteAllBytes("Coin.wav", wav);
 ```
 
-Use raw bytes directly
+### Use raw bytes directly
 ```cs
 byte[] wav = WavWriter.Write(buffer, AudioEncoding.Pcm32F);
 // Pass wav to your audio system, stream it, write it to disk... up to you
 ```
 
-Add Filter
+### Add Filters
 ```cs
 using Resonance.Filters;
 
 effect.AddFilter(new OnePoleFilter(effect.SampleRate, FilterType.LowPass, frequency: 200f));
 AudioBuffer buffer = effect.Generate(1f);
 ```
+
+## Roadmap
+- [ ] User Interface
+- [ ] More Filter Types
+- [ ] Unity Editor Window (Seperate Project)
