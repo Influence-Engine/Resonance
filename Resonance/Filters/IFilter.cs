@@ -1,4 +1,6 @@
-﻿namespace Resonance.Filters
+﻿using System;
+
+namespace Resonance.Filters
 {
     /// <summary>Base interface for all audio filters</summary>
     public interface IFilter

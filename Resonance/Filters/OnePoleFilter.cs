@@ -1,4 +1,6 @@
-﻿namespace Resonance.Filters
+﻿using System;
+
+namespace Resonance.Filters
 {
     /// <summary>Simple one-pole filter (6dB/octave)</summary>
     public class OnePoleFilter : FilterBase

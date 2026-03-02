@@ -1,10 +1,12 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Resonance.Filters
 {
     /// <summary>Chain multiple filters together</summary>
     public class FilterChain : IFilter
     {
-        readonly List<IFilter> filters = new();
+        readonly List<IFilter> filters = new List<IFilter>();
         readonly int sampleRate;
 
         public int SampleRate => sampleRate;

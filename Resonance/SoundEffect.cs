@@ -2,6 +2,8 @@
 using Resonance.Envelopes;
 using Resonance.Filters;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System;
 
 namespace Resonance
 {
@@ -9,7 +11,7 @@ namespace Resonance
     public class SoundEffect
     {
         readonly AudioFormat format;
-        readonly List<IFilter> filters = new();
+        readonly List<IFilter> filters = new List<IFilter>();
 
         public IReadOnlyList<IFilter> Filters => new ReadOnlyCollection<IFilter>(filters);
 

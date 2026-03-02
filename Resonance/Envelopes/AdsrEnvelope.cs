@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Resonance.Envelopes
 {
     /// <summary>Attack-Decay-Sustain-Release envelope generator</summary>

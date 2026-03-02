@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Resonance.Oscillators
 {
     /// <summary>Its just white noise</summary>

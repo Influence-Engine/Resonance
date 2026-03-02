@@ -1,4 +1,6 @@
-﻿namespace Resonance
+﻿using System;
+
+namespace Resonance
 {
     /// <summary>Defines the format of audio data</summary>
     public readonly struct AudioFormat

@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Resonance.Oscillators
 {
     /// <summary>Sine wave oscillator</summary>

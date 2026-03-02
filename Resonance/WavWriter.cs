@@ -1,4 +1,7 @@
-﻿
+﻿using System;
+using System.IO;
+using System.Text;
+
 namespace Resonance
 {
     public enum AudioEncoding
@@ -52,12 +55,12 @@ namespace Resonance
             int dataSize = pcm.Length;
 
             // RIFF
-            writer.Write("RIFF"u8.ToArray());
+            writer.Write(Encoding.ASCII.GetBytes("RIFF"));
             writer.Write(36 + dataSize);
-            writer.Write("WAVE"u8.ToArray());
+            writer.Write(Encoding.ASCII.GetBytes("WAVE"));
 
             // fmt
-            writer.Write("fmt "u8.ToArray());
+            writer.Write(Encoding.ASCII.GetBytes("fmt "));
             writer.Write(16); // Chunk Size
             writer.Write(formatCode); // PCM Format
             writer.Write((short)buffer.Format.Channels); // Channels
@@ -67,7 +70,7 @@ namespace Resonance
             writer.Write(bitsPerSample); // Bits Per Sample
 
             // Data
-            writer.Write("data"u8.ToArray());
+            writer.Write(Encoding.ASCII.GetBytes("data"));
             writer.Write(dataSize);
             writer.Write(pcm);
 

@@ -1,4 +1,6 @@
-﻿namespace Resonance
+﻿using System;
+
+namespace Resonance
 {
     /// <summary>A buffer for audio samples</summary>
     public class AudioBuffer
